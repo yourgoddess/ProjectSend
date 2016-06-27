@@ -1,0 +1,482 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WindowsFormsApplication2
+{
+    public partial class Form1 : Form
+    {
+
+        string s, biblioteci, citiri, pp, instr, final, d, cifre="0123456789",citi;
+        char[] citir,inst,dd;
+#pragma warning disable CS0414 // The field 'Form1.n' is assigned but its value is never used
+        int n = -1, i, j, n_cit = 0, n_instr = -1, poz_cit, poz_instr, n_d = -1;
+#pragma warning restore CS0414 // The field 'Form1.n' is assigned but its value is never used
+        public int cauta(string s, string x) //cauta string-ul x in s -> returneaza 0 sau 1
+        {
+            if (s.Contains(x) == true) return 1;
+            return 0;
+        }
+        public int cauta_char(string d, char c)
+        {
+            for (j = 0; j < d.Length; j++)
+                if (c == d[j]) return 1;
+            return 0;
+        }
+        public void var_citite(string s)
+        {
+            for (i=0;i<=79;i++) citir[i] = ' ';
+            citi = System.String.Empty;
+            for (i = 0; i < s.Length; i++)
+                if (s[i] == 'c' && s[i + 1] == 'i' && s[i + 2] == 't' && s[i + 3] == 'e' && s[i + 4] == 's' && s[i + 5] == 't' && s[i + 6] == 'e' && s[i + 7] == ' ')
+                {
+                    while (s[i + 8] != ';')
+                    {
+                        if (s[i + 8] != ' ' && s[i + 8] != ',')
+                        {
+                            n_cit++;
+                            citir[n_cit] = s[i+8]; 
+                        }
+                        if (s[i + 8] == ',')
+                        {
+                            n_cit++;
+                            citir[n_cit] = '>'; 
+                            n_cit++;
+                            citir[n_cit] = '>'; 
+                        }
+                        i++;
+                    }
+                    if (s[i + 8] == ';')
+                    {
+                        poz_cit = i + 9;
+                        n_cit++;
+                        citir[n_cit] = ';';
+                    }
+                }
+            citi = new string(citir);
+            citiri = String.Concat("cin>>", citi);
+            
+        }
+
+
+
+        public void instructiuni(string s)
+        {
+            inst = new char[400];
+            j = poz_cit;
+            for (i = poz_cit; i < s.Length; i++)
+            {
+                if (s[i] == 's' && s[i + 1] == 't' && s[i + 2] == 'o' && s[i + 3] == 'p')
+                    i = i + 4;
+                else if (s[i] == 's' && s[i + 1] == 'c' && s[i + 2] == 'r' && s[i + 3] == 'i' && s[i + 4] == 'e')
+                    while (s[i] != ';') i++;
+
+
+                else //instructiunea daca 
+                if (s[i] == 'd' && s[i + 1] == 'a' && s[i + 2] == 'c' && s[i + 3] == 'a')
+                {
+                    n_instr++;
+                    inst[n_instr] = 'i';
+                    n_instr++;
+                    inst[n_instr] = 'f';
+                    n_instr++;
+                    inst[n_instr] = ' ';
+                    n_instr++;
+                    inst[n_instr] = '(';
+                    while (s[i + 6] != 'a' && s[i + 7] != 't' && s[i + 8] != 'u' && s[i + 9] != 'n' && s[i + 10] != 'c' && s[i + 11] != 'i')
+                    {
+                        if (s[i + 5] == 'A' && s[i + 6] == 'N' && s[i + 7] == 'D')
+                        {
+                            n_instr++;
+                            inst[n_instr] = '&';
+                            n_instr++;
+                            inst[n_instr] = '&';
+                            i = i + 3;
+                            //poz_instr=i+5;
+                        }
+                        else if (s[i + 5] == 'O' && s[i + 6] == 'R')
+                        {
+                            n_instr++;
+                            inst[n_instr] = '|';
+                            n_instr++;
+                            inst[n_instr] = '|';
+                            i = i + 2;
+                            //poz_instr=i+7;
+                        }
+                        else if (s[i + 5] == 'N' && s[i + 6] == 'O' && s[i + 7] == 'T')
+                        {
+                            n_instr++;
+                            inst[n_instr] = '!';
+                            i = i + 3;
+                            //poz_instr=i+5;
+                        }
+                        else
+                        {
+                            n_instr++;
+                            inst[n_instr] = s[i+5];//i+5
+                            i++;
+                        }
+
+                    }
+                    n_instr++;
+                    inst[n_instr] = ')';
+                    n_instr++;
+                    inst[n_instr] = '\n';
+                    n_instr++;
+                    inst[n_instr] = '{';
+                    i = i + 11;
+                    //poz_instr=i;
+                }
+                else if (s[i] == 'a' && s[i + 1] == 'l' && s[i + 2] == 't' && s[i + 3] == 'f' && s[i + 4] == 'e' && s[i + 5] == 'l')
+                {
+                    n_instr++;
+                    inst[n_instr] = '}';
+                    n_instr++;
+                    inst[n_instr] = '\n';
+                    n_instr++;
+                    inst[n_instr] = 'e';
+                    n_instr++;
+                    inst[n_instr] = 'l';
+                    n_instr++;
+                    inst[n_instr] = 's';
+                    n_instr++;
+                    inst[n_instr] = 'e';
+                    n_instr++;
+                    inst[n_instr] = '\n';
+                    n_instr++;
+                    inst[n_instr] = '{';
+                    n_instr++;
+                    inst[n_instr] = '\n';
+                    i = i + 5;
+                }
+                else if (s[i] == 's' && s[i + 1] == 'f' && s[i + 2] == 'a' && s[i + 3] == 'r' && s[i + 4] == 's' && s[i + 5] == 'i' && s[i + 6] == 't' && s[i + 7] == ' ' && s[i + 8] == 'd' && s[i + 9] == 'a' && s[i + 10] == 'c' && s[i + 11] == 'a')
+                {
+                    n_instr++;
+                    inst[n_instr] = '}';
+                    i = i + 11;
+                    //poz_instr=i;
+                }
+                else if (s[i] == 'c' && s[i + 1] == 'a' && s[i + 2] == 't' && s[i + 3] == ' ' && s[i + 4] == 't' && s[i + 5] == 'i' && s[i + 6] == 'm' && s[i + 7] == 'p') //cat timp
+                {
+                    n_instr++; inst[n_instr] = 'w';
+                    n_instr++; inst[n_instr] = 'h';
+                    n_instr++; inst[n_instr] = 'i';
+                    n_instr++; inst[n_instr] = 'l';
+                    n_instr++; inst[n_instr] = 'e';
+                    n_instr++; inst[n_instr] = ' ';
+                    n_instr++; inst[n_instr] = '(';
+                    n_instr++; inst[n_instr] = ' ';
+                    while (s[i + 9] != 'e' && s[i + 10] != 'x' && s[i + 11] != 'e' && s[i + 12] != 'c' && s[i + 13] != 'u' && s[i + 14] != 't' && s[i + 15] != 'a')
+                    {
+                        n_instr++;
+                        inst[n_instr] = s[i + 9];
+                        i = i + 1;
+                    }
+                    //n_instr++; instr[n_instr]=')';
+                    i = i + 8;
+                }
+                else if (s[i] == 'e' && s[i + 1] == 'x' && s[i + 2] == 'e' && s[i + 3] == 'c' && s[i + 4] == 'u' && s[i + 5] == 't' && s[i + 6] == 'a')
+                {
+                    n_instr++; inst[n_instr] = ')';
+                    n_instr++; inst[n_instr] = '\n';
+                    n_instr++; inst[n_instr] = '{';
+                    i = i + 7;
+                }
+                else if (s[i] == 's' && s[i + 1] == 'f' && s[i + 2] == 'a' && s[i + 3] == 'r' && s[i + 4] == 's' && s[i + 5] == 'i' && s[i + 6] == 't' && s[i + 7] == ' '
+                && s[i + 8] == 'c' && s[i + 9] == 'a' && s[i + 10] == 't' && s[i + 11] == ' ' && s[i + 12] == 't' && s[i + 13] == 'i' && s[i + 14] == 'm' && s[i + 15] == 'p')
+                {
+                    n_instr++;
+                    inst[n_instr] = '}';
+                    i = i + 15;
+                }
+                //repeta
+                else if (s[i] == 'r' && s[i + 1] == 'e' && s[i + 2] == 'p' && s[i + 3] == 'e' && s[i + 4] == 't' && s[i + 5] == 'a')
+                {
+                    n_instr++; inst[n_instr] = 'd';
+                    n_instr++; inst[n_instr] = 'o';
+                    n_instr++; inst[n_instr] = '\n';
+                    n_instr++; inst[n_instr] = '{';
+                    while (s[i + 7] != 'p' && s[i + 8] != 'a' && s[i + 9] != 'n' && s[i + 10] != 'a' && s[i + 11] != ' ' && s[i + 12] != 'c' && s[i + 13] != 'a' && s[i + 14] != 'n' && s[i + 15] != 'd')
+                    {
+                        n_instr++;
+                        inst[n_instr] = s[i + 7];
+                        i = i + 1;
+                    }
+                    //n_instr++; instr[n_instr]=')';
+                    i = i + 6;
+                }
+                else if (s[i] == 'p' && s[i + 1] == 'a' && s[i + 2] == 'n' && s[i + 3] == 'a' && s[i + 4] == ' ' && s[i + 5] == 'c' && s[i + 6] == 'a' && s[i + 7] == 'n' && s[i + 8] == 'd')
+                {
+
+                    n_instr++; inst[n_instr] = '}';
+                    n_instr++; inst[n_instr] = '\n';
+                    n_instr++; inst[n_instr] = 'w';
+                    n_instr++; inst[n_instr] = 'h';
+                    n_instr++; inst[n_instr] = 'i';
+                    n_instr++; inst[n_instr] = 'l';
+                    n_instr++; inst[n_instr] = 'e';
+                    n_instr++; inst[n_instr] = ' ';
+                    n_instr++; inst[n_instr] = '(';
+                    n_instr++; inst[n_instr] = '!';
+                    n_instr++; inst[n_instr] = '(';
+                    while (s[i + 10] != ';' && s[i + 10] != '\n')
+                    {
+                        if (s[i + 10] == 'A' && s[i + 11] == 'N' && s[i + 12] == 'D')
+                        {
+                            n_instr++;
+                            inst[n_instr] = '&';
+                            n_instr++;
+                            inst[n_instr] = '&';
+                            i = i + 3;
+                            //poz_instr=i+5;
+                        }
+                        else if (s[i + 10] == 'O' && s[i + 11] == 'R')
+                        {
+                            n_instr++;
+                            inst[n_instr] = '|';
+                            n_instr++;
+                            inst[n_instr] = '|';
+                            i = i + 2;
+                            //poz_instr=i+7;
+                        }
+                        else if (s[i + 10] == 'N' && s[i + 11] == 'O' && s[i + 12] == 'T')
+                        {
+                            n_instr++;
+                            inst[n_instr] = '!';
+                            i = i + 3;
+                            //poz_instr=i+5;
+                        }
+                        else
+                        {
+                            n_instr++; inst[n_instr] = s[i + 10];
+                            i++;
+                        }
+                        //i=i+2;
+                    }
+                    i = i + 26;
+                    n_instr++;
+                    inst[n_instr] = ')';
+                    n_instr++;
+                    inst[n_instr] = ')';
+                    n_instr++;
+                    inst[n_instr] = ';';
+                    n_instr++;
+                    inst[n_instr] = '\n';
+                }
+                else if (s[i] == 's' && s[i + 1] == 'f' && s[i + 2] == 'a' && s[i + 3] == 'r' && s[i + 4] == 's' && s[i + 5] == 'i' && s[i + 6] == 't' && s[i + 7] == ' '
+                && s[i + 8] == 'r' && s[i + 9] == 'e' && s[i + 10] == 'p' && s[i + 11] == 'e' && s[i + 12] == 't' && s[i + 13] == 'a')
+                {
+                    n_instr++;
+                    inst[n_instr] = ')';
+                    n_instr++;
+                    inst[n_instr] = ';';
+                    i = i + 13;
+                }
+
+
+                //pentru
+                else if (s[i] == 'p' && s[i + 1] == 'e' && s[i + 2] == 'n' && s[i + 3] == 't' && s[i + 4] == 'r' && s[i + 5] == 'u')
+                {
+                    n_instr++; inst[n_instr] = 'f';
+                    n_instr++; inst[n_instr] = 'o';
+                    n_instr++; inst[n_instr] = 'r';
+                    n_instr++; inst[n_instr] = ' ';
+                    n_instr++; inst[n_instr] = '(';
+                    int poz = i + 7, pozz = i + 7, pozzz = i + 7;
+                    while (s[i + 7] != '=')
+                    {
+                        n_instr++;
+                        inst[n_instr] = s[i + 7];
+                        i = i + 1;
+                    }
+                    n_instr++;
+                    inst[n_instr] = '=';
+                    while (s[i + 8] != ',')
+                    {
+                        n_instr++;
+                        inst[n_instr] = s[i + 8];
+                        i++;
+                    }
+                    n_instr++;
+                    inst[n_instr] = ';';
+                    while (s[poz] != '=')
+                    {
+                        n_instr++;
+                        inst[n_instr] = s[poz];
+                        poz++;
+                    }
+                    n_instr++;
+                    inst[n_instr] = '<';
+                    n_instr++;
+                    inst[n_instr] = '=';
+                    while (s[i + 9] != ',')
+                    {
+                        n_instr++;
+                        inst[n_instr] = s[i + 9];
+                        i++;
+                    }
+                    n_instr++;
+                    inst[n_instr] = ';';
+                    while (s[pozz] != '=')
+                    {
+                        n_instr++;
+                        inst[n_instr] = s[pozz];
+                        pozz++;
+                    }
+                    n_instr++;
+                    inst[n_instr] = '=';
+                    while (s[pozzz] != '=')
+                    {
+                        n_instr++;
+                        inst[n_instr] = s[pozzz];
+                        pozzz++;
+                    }
+                    n_instr++;
+                    inst[n_instr] = '+';
+                    while (s[i + 10] != ' ')
+                    {
+                        n_instr++;
+                        inst[n_instr] = s[i + 10];
+                        i++;
+                    }
+                    n_instr++;
+                    inst[n_instr] = ')';
+                    n_instr++;
+                    inst[n_instr] = '\n';
+                    n_instr++;
+                    inst[n_instr] = '{';
+                    i = i + 17;
+                }
+                else if (s[i] == 's' && s[i + 1] == 'f' && s[i + 2] == 'a' && s[i + 3] == 'r' && s[i + 4] == 's' && s[i + 5] == 'i' && s[i + 6] == 't' && s[i + 7] == ' '
+                        && s[i + 8] == 'p' && s[i + 9] == 'e' && s[i + 10] == 'n' && s[i + 11] == 't' && s[i + 12] == 'r' && s[i + 13] == 'u')
+                {
+                    //n_instr++;
+                    //instr[n_instr]='\n';
+                    n_instr++;
+                    inst[n_instr] = '}';
+                    i = i + 14;
+                }
+
+
+                else
+                {
+                    n_instr++;                      //copierea instructiunilor comune
+                    inst[n_instr] = s[i];
+                    //poz_instr=i;
+                }
+            }
+            
+            for (i = 0; i < s.Length; i++)
+            {
+                if (s[i] == 's' && s[i + 1] == 'c' && s[i + 2] == 'r' && s[i + 3] == 'i' && s[i + 4] == 'e' && s[i + 5] == ' ')
+                {
+                    n_instr++;
+                    inst[n_instr] = 'c';
+                    n_instr++;
+                    inst[n_instr] = 'o';
+                    n_instr++;
+                    inst[n_instr] = 'u';
+                    n_instr++;
+                    inst[n_instr] = 't';
+                    n_instr++;
+                    inst[n_instr] = '<';
+                    n_instr++;
+                    inst[n_instr] = '<';
+                    while (s[i + 6] != ';')
+                    {
+                        if (s[i + 6] != ' ' && s[i + 6] != ',')
+                        {
+                            n_instr++;
+                            inst[n_instr] = s[i + 6];
+                        }
+                        if (s[i + 6] == ',')
+                        {
+                            n_instr++;
+                            inst[n_instr] = '<';
+                            n_instr++;
+                            inst[n_instr] = '<';
+                        }
+                        i++;
+                    }
+                    if (s[i + 6] == ';')
+                    {
+                        poz_instr = i + 7;
+                        n_instr++;
+                        inst[n_instr] = ';';
+                    }
+                }
+                //	else i=i+5;
+            }
+            instr = new string(inst);
+        }
+
+        public void declarari(string s)
+        {
+            dd = new char[500];
+            for (i = 0; i < n_instr; i++)
+                if (instr[i] != 'c' && instr[i + 1] != 'o' && instr[i + 2] != 'u' && instr[i + 3] != 't' && instr[i] != 'i' && instr[i + 1] != 'f'
+                && instr[i] != 'e' && instr[i + 1] != 'l' && instr[i + 2] != 's' && instr[i + 3] != 'e'
+                && instr[i] != 'w' && instr[i + 1] != 'h' && instr[i + 2] != 'i' && instr[i + 3] != 'l' && instr[i + 4] != 'e'
+                && instr[i] != 'd' && instr[i + 1] != 'o'
+                && instr[i] != 'f' && instr[i + 1] != 'o' && instr[i + 2] != 'r' && instr[i]!=' ') //daca nu sunt cuvinte specifice: cout, if, else
+                    if (instr[i] != '+' && instr[i] != '-' && instr[i] != '*' && instr[i] != '/' && instr[i] != '=' && instr[i] != ';' && instr[i] != '<' && instr[i] != '>' && instr[i] != '%' && instr[i] != '(' && instr[i] != ')'
+                    && instr[i] != '!' && instr[i] != '|' && instr[i] != '&' && instr[i] != '{' && instr[i] != '}' && cauta_char(cifre,instr[i])==0 && cauta_char(d, instr[i]) == 0)
+                    {
+                        n_d++;
+                        dd[n_d] = instr[i];
+                        n_d++;
+                        dd[n_d] = ' ';
+                        d = new string(dd);
+                    }
+#pragma warning disable CS0642 // Possible mistaken empty statement
+                    else;
+#pragma warning restore CS0642 // Possible mistaken empty statement
+                else i = i + 3;
+          /*  for (i = 0; i < n_cit; i++)
+                if (citiri[i] != '>' && citiri[i] != ';')
+                { n_d++;
+                    dd[n_d] = citiri[i];
+                }*/
+            d = new string(dd);
+        }
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DateTime start = DateTime.Now;
+            {
+                label2.Visible = true;
+            d = System.String.Empty;
+            final = System.String.Empty;
+            citiri = System.String.Empty;
+            biblioteci = System.String.Empty;
+            citir = new char[80];
+            s = textBox1.Text;
+            if (cauta(s, "start") == 1)
+                biblioteci=String.Concat(biblioteci, "#include <conio.h>", Environment.NewLine, "#include <iostream.h>");
+            pp=String.Copy ("int main()\n{");
+
+             var_citite(s);
+            instructiuni(s);
+            declarari(s);
+
+            textBox2.Text += biblioteci + Environment.NewLine+"int ";
+             for (i = 1; i < n_d - 1; i++)
+                 if (d[i] != ' ' && d[i] != '\n') textBox2.Text += d[i] + ", ";
+             textBox2.Text += d[n_d - 1] + ";" + Environment.NewLine + pp + Environment.NewLine + citiri + 
+                 instr + Environment.NewLine;
+             if (cauta(s, "stop") == 1)  textBox2.Text+=Environment.NewLine+"return 0;\n}";
+            }
+            TimeSpan timeItTook = DateTime.Now - start;
+        }
+    }
+}
